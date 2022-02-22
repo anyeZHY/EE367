@@ -1,0 +1,19 @@
+name: ee367-hw
+channels:
+  - defaults
+  - pytorch
+dependencies:
+  - python=3.7
+  - notebook
+  - numpy
+  - scipy
+  - pip
+  - tqdm
+  - matplotlib
+  - scikit-image
+  - pytorch=1.9
+  - torchvision=0.10
+  - pip:
+      - pypher
+      - opencv-python
+      - ipywidgets
