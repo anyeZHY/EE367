@@ -27,12 +27,14 @@ for sigma in sigmas:
     out = np.zeros_like(noisy)
     for channel in [0, 1, 2]:
         out[..., channel] = np.zeros_like(noisy[..., 0]) # TODO your code here
+        out[..., channel] += gaussian(noisy[..., channel], sigma=sigma)
     filtered[f'gaussian_{sigma}'] = out
 
     # Median filter
     out = np.zeros_like(noisy)
     for channel in [0, 1, 2]:
         out[..., channel] = np.zeros_like(noisy[..., 0]) # TODO your code here
+        out[..., channel] += median_filter(noisy[..., channel],size=filtSize)
     filtered[f'median_{filtSize}'] = out
 
     # Bilateral Filter
@@ -91,4 +93,4 @@ for r, sigma in enumerate(sigmas):
     ax[r+1,3].axis('off')
 ax[0,2].remove()
 ax[0,3].remove()
-fig.savefig('task3_denoising.png', bbox_inches='tight')
+fig.savefig('task3_denoising.pdf', bbox_inches='tight')

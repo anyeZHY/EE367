@@ -6,3 +6,8 @@
 
 该 repository 用于记录我对 Stanford EE367 课程作业的实现。
 
+## Implementation
+
+- Homework 1: completed on Feb. 22, 2022
+- Homework 2: completed on Mar. 9, 2022
+  - Note: 'for' in Python may lead to much running time.

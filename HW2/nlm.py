@@ -37,4 +37,21 @@ def nonlocalmeans(img, searchWindowRadius, averageFilterRadius, sigma, nlmSigma)
             max_weight = 0
 
             out[y, x, :] = 0. # TODO: Replace with your code.
+            J = imgPad[
+                y + pad - searchWindowRadius:y + pad + searchWindowRadius + 1,
+                x + pad - searchWindowRadius:x + pad + searchWindowRadius + 1,
+                :
+            ]
+            for yy in range(2*searchWindowRadius+1):
+                for xx in range(2*searchWindowRadius+1):
+                    x_j = x+xx-searchWindowRadius+pad
+                    y_j = y+yy-searchWindowRadius+pad
+                    if inbounds(img,y_j-averageFilterRadius,x_j-averageFilterRadius):
+                        patch = imgPad[y_j-averageFilterRadius:y_j+averageFilterRadius+1,
+                                       x_j-averageFilterRadius:x_j+averageFilterRadius+1,
+                                       :]
+                        if xx!=searchWindowRadius & yy!=searchWindowRadius:
+                            weights[yy, xx, 0] = np.sum(comparePatches(patch,centerPatch,kernel,nlmSigma))
+                            max_weight += weights[yy, xx, 0]
+            out[y, x, :] = np.sum(weights * J / max_weight)
     return out
