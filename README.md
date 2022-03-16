@@ -10,4 +10,5 @@
 
 - Homework 1: completed on Feb. 22, 2022
 - Homework 2: completed on Mar. 9, 2022
-  - Note: 'for' in Python may lead to much running time.
+  - The implementation of NLM is naive and not vectorized.
+  - NB: 'for' in Python may lead to much running time. (M1 Mac: 5 minutes.)

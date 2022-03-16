@@ -37,21 +37,25 @@ def nonlocalmeans(img, searchWindowRadius, averageFilterRadius, sigma, nlmSigma)
             max_weight = 0
 
             out[y, x, :] = 0. # TODO: Replace with your code.
+            sWR = searchWindowRadius
             J = imgPad[
-                y + pad - searchWindowRadius:y + pad + searchWindowRadius + 1,
-                x + pad - searchWindowRadius:x + pad + searchWindowRadius + 1,
+                y + pad - sWR:y + pad + sWR + 1,
+                x + pad - sWR:x + pad + sWR + 1,
                 :
             ]
-            for yy in range(2*searchWindowRadius+1):
-                for xx in range(2*searchWindowRadius+1):
-                    x_j = x+xx-searchWindowRadius+pad
-                    y_j = y+yy-searchWindowRadius+pad
-                    if inbounds(img,y_j-averageFilterRadius,x_j-averageFilterRadius):
+            for yy in range(2*sWR+1):
+                for xx in range(2*sWR+1):
+                    if xx == sWR & yy == sWR:
+                        continue
+                    x_j = x + xx - sWR + pad
+                    y_j = y + yy - sWR + pad
+                    if inbounds(img, y_j-averageFilterRadius, x_j-averageFilterRadius):
                         patch = imgPad[y_j-averageFilterRadius:y_j+averageFilterRadius+1,
                                        x_j-averageFilterRadius:x_j+averageFilterRadius+1,
                                        :]
-                        if xx!=searchWindowRadius & yy!=searchWindowRadius:
-                            weights[yy, xx, 0] = np.sum(comparePatches(patch,centerPatch,kernel,nlmSigma))
-                            max_weight += weights[yy, xx, 0]
-            out[y, x, :] = np.sum(weights * J / max_weight)
+                        weights[yy, xx, 0] = np.sum(comparePatches(patch,centerPatch,kernel,nlmSigma))
+                        if weights[yy, xx, 0] > max_weight:
+                            max_weight = weights[yy, xx, 0]
+            weights[sWR, sWR] = max_weight
+            out[y, x, :] = np.sum(weights * J / np.sum(weights))
     return out
